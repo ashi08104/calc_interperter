@@ -21,7 +21,7 @@ def get_paired_parenthes_pos(s, left_paren_pos):
                 return get_paired_parenthes_pos_help(next_p)
         except IndexError:
             raise Exception("Unmatched parenthes found.")
-    
+
     return get_paired_parenthes_pos_help(left_paren_pos)
 
 def str2tk(s):
