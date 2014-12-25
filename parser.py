@@ -60,8 +60,8 @@ class AstNode(object):
 def parser(exps):
     """Parse following grammar and return the AST:
        E->n
-       E->(E+E)
-       E->(E-E) // TODO
+       E->(E OP E)
+       OP-> one of +, -, *, /
     Input is list of tokens: ["(", "33", "+", "2", ")"]
     """
     if exps[0].isdigit():
@@ -89,8 +89,32 @@ def parser(exps):
 def str2ast(s):
     return parser(str2tk(s))
 
-def eval(ast):
-    pass
+def eval_help(ast):
+    """ Evaluate ast to result.
+    """
+    # The terminal node, which is None.
+    # This would not happen. Because every terminal node must be the leaf of
+    # number node and number just return number.
+    # if not ast:
+    #     return 0
+
+    # Number node, just return number.
+    if ast.token.isdigit():
+        return int(ast.token)
+    # Varies opeartions.
+    # TODO is there a simpler solution?:
+    # return eval_help(ast.left) (translate2opeartion(ast.token)) eval_help(ast.right)
+    elif ast.token == "+":
+        return eval_help(ast.left) + eval_help(ast.right)
+    elif ast.token == "-":
+        return eval_help(ast.left) - eval_help(ast.right)
+    elif ast.token == "*":
+        return eval_help(ast.left) * eval_help(ast.right)
+    elif ast.token == "/":
+        return eval_help(ast.left) / eval_help(ast.right)
+
+def evaluate(s):
+    return eval_help(str2ast(s))
 
 if __name__ == "__main__":
     pass
