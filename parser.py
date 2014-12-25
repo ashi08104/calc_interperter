@@ -41,7 +41,7 @@ def str2tk(s):
         return [s[0]] + str2tk(s[1:])
 
 class AstNode(object):
-    def __init__(self, token):
+    def __init__(self, token=""):
         self.token = token
         self.left = None
         self.right = None
@@ -70,21 +70,27 @@ def parser(exps):
     elif exps[0] == "(":
         # case of E->(E+E)
         # Look forward one element.
-        ast = AstNode("+")
+        ast = AstNode()
         if exps[1] == "(":
             pos = get_paired_parenthes_pos(exps, 1)
             ast.left = parser(exps[1:pos + 1])
-            # exclude last ")"
+            # Extract operation.
+            ast.token = exps[pos + 1]
+            # Exclude last ")".
             ast.right = parser(exps[pos + 2:-1])
             return ast
         else:
-            # is digit
+            # It is digit.
             ast.left = AstNode(exps[1])
+            ast.token = exps[2]
             ast.right = parser(exps[3:])
             return ast
 
-def parser2ast(s):
+def str2ast(s):
     return parser(str2tk(s))
 
+def eval(ast):
+    pass
+
 if __name__ == "__main__":
-    print str2tk("(  1+(3 -1)) ")
+    pass

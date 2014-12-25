@@ -1,5 +1,5 @@
 import unittest
-from parser import get_paired_parenthes_pos, str2tk, parser2ast
+from parser import get_paired_parenthes_pos, str2tk, str2ast
 
 class TestPairedParenthes(unittest.TestCase):
     def setUp(self):
@@ -82,23 +82,23 @@ class TestParser(unittest.TestCase):
         pass
 
     def test_n(self):
-        self.assertEqual(str(parser2ast("3")),
+        self.assertEqual(str(str2ast("3")),
                          "[3:N N]")
 
     def test_e1(self):
-        self.assertEqual(str(parser2ast("(33+2)")),
+        self.assertEqual(str(str2ast("(33+2)")),
                          "[+:[33:N N] [2:N N]]")
 
     def test_e2(self):
-        self.assertEqual(str(parser2ast("(33+(2+1))")),
+        self.assertEqual(str(str2ast("(33+(2+1))")),
                          "[+:[33:N N] [+:[2:N N] [1:N N]]]")
 
     def test_e3(self):
-        self.assertEqual(str(parser2ast("((3+3)+2)")),
+        self.assertEqual(str(str2ast("((3+3)+2)")),
                          "[+:[+:[3:N N] [3:N N]] [2:N N]]")
 
     def test_e3(self):
-        self.assertEqual(str(parser2ast("((1+((2+3)+3))+((((4+5)+(6+7))+8)+9))")),
+        self.assertEqual(str(str2ast("((1+((2+3)+3))+((((4+5)+(6+7))+8)+9))")),
                          "[+:[+:[1:N N] [+:[+:[2:N N] [3:N N]] [3:N N]]] [+:[+:[+:[+:[4:N N] [5:N N]] [+:[6:N N] [7:N N]]] [8:N N]] [9:N N]]]")
 
 
