@@ -57,10 +57,11 @@ class AstNode(object):
                                    left,
                                    right)
 
-def parser_add(exps):
+def parser(exps):
     """Parse following grammar and return the AST:
        E->n
        E->(E+E)
+       E->(E-E) // TODO
     Input is list of tokens: ["(", "33", "+", "2", ")"]
     """
     if exps[0].isdigit():
@@ -72,18 +73,18 @@ def parser_add(exps):
         ast = AstNode("+")
         if exps[1] == "(":
             pos = get_paired_parenthes_pos(exps, 1)
-            ast.left = parser_add(exps[1:pos + 1])
+            ast.left = parser(exps[1:pos + 1])
             # exclude last ")"
-            ast.right = parser_add(exps[pos + 2:-1])
+            ast.right = parser(exps[pos + 2:-1])
             return ast
         else:
             # is digit
             ast.left = AstNode(exps[1])
-            ast.right = parser_add(exps[3:])
+            ast.right = parser(exps[3:])
             return ast
 
 def parser2ast(s):
-    return parser_add(str2tk(s))
+    return parser(str2tk(s))
 
 if __name__ == "__main__":
-    print str2tk("(  1+3) ")
+    print str2tk("(  1+(3 -1)) ")
